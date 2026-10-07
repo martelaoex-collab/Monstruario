@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lista de Produtos</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f7f7f7;
+    color: #555;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 270px 1fr;
+    min-height: 100vh;
+  }
+
+  /* FILTROS */
+  .sidebar {
+    background: #fff;
+    border-right: 1px solid #ddd;
+    padding: 18px 15px;
+  }
+
+  .filter-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #ddd;
+    color: #666;
+    font-size: 14px;
+  }
+
+  .filter-title strong {
+    color: #555;
+    font-size: 16px;
+  }
+
+  .section {
+    padding: 18px 0;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .section h3 {
+    margin: 0 0 14px;
+    font-size: 16px;
+    color: #666;
+  }
+
+  .category {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin: 11px 0;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  .category input {
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    accent-color: #ed0038;
+    cursor: pointer;
+  }
+
+  .category .count {
+    margin-left: auto;
+    color: #999;
+  }
+
+  /* CONTEÚDO */
+  .content {
+    padding: 28px 30px;
+    min-width: 0;
+  }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+  }
+
+  .result-count {
+    font-size: 14px;
+    color: #555;
+  }
+
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .search {
+    width: 250px;
+    padding: 11px 13px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    font-size: 14px;
+  }
+
+  .search:focus {
+    border-color: #ed0038;
+  }
+
+  .view-button {
+    border: 1px solid #ccc;
+    background: #fff;
+    padding: 10px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .view-button.active {
+    background: #ed0038;
+    color: white;
+    border-color: #ed0038;
+  }
+
+  /* GRID */
+  .products {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(200px, 1fr));
+    gap: 22px;
+  }
+
+  .product {
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 7px rgba(0,0,0,.10);
+    transition: .2s;
+  }
+
+  .product:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,.13);
+  }
+
+  .image-box {
+    height: 375px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fafafa;
+    padding: 20px;
+  }
+
+  .image-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .add {
+    position: absolute;
+    right: 12px;
+    bottom: 10px;
+    width: 44px;
+    height: 44px;
+    border: 0;
+    border-radius: 50%;
+    background: #ed0038;
+    color: #fff;
+    font-size: 27px;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .add:hover { background: #c90030; }
+
+  .info {
+    padding: 15px;
+  }
+
+  .product-name {
+    min-height: 42px;
+    font-size: 15px;
+    line-height: 1.3;
+    font-weight: bold;
+    color: #4e4e4e;
+    margin-bottom: 8px;
+  }
+
+  .code {
+    color: #999;
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+
+  .category-label {
+    display: inline-block;
+    font-size: 11px;
+    background: #f2f2f2;
+    padding: 5px 8px;
+    border-radius: 12px;
+    color: #777;
+    margin-bottom: 10px;
+  }
+
+  .stars {
+    color: #ffc400;
+    letter-spacing: 1px;
+    margin-bottom: 13px;
+    font-size: 16px;
+  }
+
+  .price {
+    color: #333;
+    font-weight: bold;
+    font-size: 17px;
+  }
+
+  .price small {
+    font-size: 12px;
+    font-weight: normal;
+    color: #777;
+  }
+
+  .entrega {
+    color: #999;
+    font-size: 11px;
+    margin-top: 5px;
+  }
+
+  .empty {
+    display: none;
+    text-align: center;
+    padding: 60px 20px;
+    color: #888;
+    grid-column: 1 / -1;
+  }
+
+  /* LISTA */
+  .products.list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .products.list .product {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+  }
+
+  .products.list .image-box {
+    height: 150px;
+  }
+
+  /* MOBILE */
+  .mobile-filter {
+    display: none;
+  }
+
+  @media (max-width: 1200px) {
+    .products { grid-template-columns: repeat(3, minmax(190px, 1fr)); }
+  }
+
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 220px 1fr; }
+    .products { grid-template-columns: repeat(2, minmax(180px, 1fr)); }
+    .search { width: 180px; }
+  }
+
+  @media (max-width: 650px) {
+    .layout { display: block; }
+
+    .sidebar {
+      display: none;
+    }
+
+    .mobile-filter {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 7px;
+      margin-bottom: 15px;
+    }
+
+    .content { padding: 15px; }
+
+    .topbar {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .controls {
+      flex-wrap: wrap;
+    }
+
+    .search {
+      width: 100%;
+    }
+
+    .products {
+      grid-template-columns: repeat(2, minmax(140px, 1fr));
+      gap: 12px;
+    }
+
+    .image-box { height: 155px; }
+    .info { padding: 11px; }
+    .product-name { font-size: 13px; }
+    .price { font-size: 15px; }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="filter-title">
+      <strong>Produtos</strong>
+      <span id="totalSidebar">(0)</span>
+    </div>
+
+    <div class="section">
+      <h3>Categoria</h3>
+      <div id="categories"></div>
+    </div>
+  </aside>
+
+  <main class="content">
+
+    <select class="mobile-filter" id="mobileCategory">
+      <option value="todos">Todas as categorias</option>
+    </select>
+
+    <div class="topbar">
+      <div class="result-count">
+        <strong id="resultCount">0 produtos encontrados</strong>
+      </div>
+
+      <div class="controls">
+        <input
+          class="search"
+          id="search"
+          type="search"
+          placeholder="Buscar produto..."
+        >
+
+        <button class="view-button active" id="gridButton">▦ Grid</button>
+        <button class="view-button" id="listButton">☷ Lista</button>
+      </div>
+    </div>
+
+    <div class="products" id="products"></div>
+    <div class="empty" id="empty">Nenhum produto encontrado.</div>
+
+  </main>
+</div>
+
+<script>
+/*
+  ============================================================
+  ARRAY DE PRODUTOS
+  ============================================================
+
+  preçoEntregando = valor original/de entrega.
+
+  O preço exibido automaticamente será 20% menor:
+  preçoExibido = preçoEntregando * 0.80
+*/
+
+const produtos = [
+  {
+    nome: "FL Kit Sicilia Susp 1 Porta 44.5cm + Pia + Espelho Text Preta - RORATO",
+    img: "./imgs/gabineteBanheiro1.jpeg",
+    codigo: "22795",
+    precoEntregando: 711.24,
+    categoria: "Gabinete para Banheiro"
+  },
+  {
+    nome: "FL Conjunto Cube 45cm San Remo Branco - IMOB",
+    img: "./imgs/gabineteBanheiro2.jpeg",
+    codigo: "22061",
+    precoEntregando: 277.47,
+    categoria: "Gabinete para Banheiro"
+  },
+  {
+    nome: "Kit Capri Armario c/Espelheira 39cm Gianduia - RORATO",
+    img: "./imgs/gabineteBanheiro3.jpeg",
+    codigo: "27643",
+    precoEntregando: 435,
+    categoria: "Gabinete para Banheiro"
+  },
+  {
+    nome: "Kit Capri Armario c/Espelheira 39cm Tex Preta - RORATO",
+    img: "./imgs/gabineteBanheiro4.jpeg",
+    codigo: "27644",
+    precoEntregando: 435,
+    categoria: "Gabinete para Banheiro"
+  },
+  {
+    nome: "Kit Capri Armario c/Espelheira 39cm Nogal - RORATO",
+    img: "./imgs/gabineteBanheiro5.jpeg",
+    codigo: "27641",
+    precoEntregando: 435,
+    categoria: "Gabinete para Banheiro"
+  },
+  {
+    nome: "Kit WC Madeira Onix 40cm Branco - COZIMAX",
+    img: "./imgs/gabineteBanheiro6.jpeg",
+    codigo: "26768",
+    precoEntregando: 268.37,
+    categoria: "Gabinete para Banheiro"
+  },
+  {
+    nome: "Kit Capri Armario c/Espelheira 39cm Moss Absolut - RORATO",
+    img: "./imgs/gabineteBanheiro7.jpeg",
+    codigo: "27642",
+    precoEntregando: 435,
+    categoria: "Gabinete para Banheiro"
+  },
+  {
+    nome: "Gabinete Banheiro Iris 44cm c/Espelheira Branco - MGM",
+    img: "./imgs/gabineteBanheiro8.jpeg",
+    codigo: "24001",
+    precoEntregando: 328.73,
+    categoria: "Gabinete para Banheiro"
+  },
+  {
+    nome: "Gabinete Banheiro Iris 44cm c/Espelheira Cinamomo OffWhite - MGm",
+    img: "./imgs/gabineteBanheiro9.jpeg",
+    codigo: "27409",
+    precoEntregando: 328.73,
+    categoria: "Gabinete para Banheiro"
+  },
+  {
+    nome: "Kit Armario Siena 39cm Branco - RORATO",
+    img: "./imgs/gabineteBanheiro10.jpeg",
+    codigo: "21983",
+    precoEntregando: 233.74,
+    categoria: "Gabinete para Banheiro"
+  },
+  {
+    nome: "Kit Armario Siena 39cm Preto - RORATO",
+    img: "./imgs/gabineteBanheiro15.jpeg",
+    codigo: "21984",
+    precoEntregando: 233.74,
+    categoria: "Gabinete para Banheiro"
+  },
+  {
+    nome: "Gabinete Banheiro Iris 44cm c/Espelheira Branco/Preto - MGM",
+    img: "./imgs/gabineteBanheiro11.jpeg",
+    codigo: "24002",
+    precoEntregando: 328.74,
+    categoria: "Gabinete para Banheiro"
+  },
+  {
+    nome: "Kit Gabinete e Espelheira Uni 60cm Capuuccino Freijo - MGM",
+    img: "./imgs/gabineteBanheiro12.jpeg",
+    codigo: "25160",
+    precoEntregando: 1153.16,
+    categoria: "Gabinete para Banheiro"
+  },
+  {
+    nome: "Armario Portinari 60cm Titanio Freijo - MGM",
+    img: "./imgs/gabineteBanheiro13.jpeg",
+    codigo: "25177",
+    precoEntregando: 1048.15,
+    categoria: "Gabinete para Banheiro"
+  },
+  {
+    nome: "FL Gabinete Veneza 1 porta + 4 nichos 55,5cm Textura Branca - Rorato",
+    img: "./imgs/gabineteBanheiro14.jpeg",
+    codigo: "19760",
+    precoEntregando: 628.72,
+    categoria: "Gabinete para Banheiro"
+  }
+];
+
+let categoriaSelecionada = "todos";
+
+const productsEl = document.getElementById("products");
+const categoriesEl = document.getElementById("categories");
+const resultCountEl = document.getElementById("resultCount");
+const totalSidebarEl = document.getElementById("totalSidebar");
+const searchEl = document.getElementById("search");
+const emptyEl = document.getElementById("empty");
+const mobileCategoryEl = document.getElementById("mobileCategory");
+
+function dinheiro(valor) {
+  return valor.toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL"
+  });
+}
+
+function precoComDesconto(precoEntregando) {
+  return precoEntregando * 0.80;
+}
+
+function criarCategorias() {
+  const categorias = [...new Set(produtos.map(p => p.categoria))].sort();
+
+  categoriesEl.innerHTML = `
+    <label class="category">
+      <input type="radio" name="categoria" value="todos" checked>
+      <span>Todos</span>
+      <span class="count">${produtos.length}</span>
+    </label>
+  `;
+
+  categorias.forEach(categoria => {
+    const quantidade = produtos.filter(p => p.categoria === categoria).length;
+
+    categoriesEl.innerHTML += `
+      <label class="category">
+        <input type="radio" name="categoria" value="${categoria}">
+        <span>${categoria}</span>
+        <span class="count">(${quantidade})</span>
+      </label>
+    `;
+  });
+
+  mobileCategoryEl.innerHTML = `
+    <option value="todos">Todas as categorias (${produtos.length})</option>
+    ${categorias.map(categoria => {
+      const qtd = produtos.filter(p => p.categoria === categoria).length;
+      return `<option value="${categoria}">${categoria} (${qtd})</option>`;
+    }).join("")}
+  `;
+
+  document.querySelectorAll('input[name="categoria"]').forEach(input => {
+    input.addEventListener("change", () => {
+      categoriaSelecionada = input.value;
+      mobileCategoryEl.value = categoriaSelecionada;
+      renderProdutos();
+    });
+  });
+}
+
+function renderProdutos() {
+  const busca = searchEl.value.toLowerCase().trim();
+
+  const filtrados = produtos.filter(produto => {
+    const categoriaOk =
+      categoriaSelecionada === "todos" ||
+      produto.categoria === categoriaSelecionada;
+
+    const buscaOk =
+      produto.nome.toLowerCase().includes(busca) ||
+      produto.codigo.toLowerCase().includes(busca);
+
+    return categoriaOk && buscaOk;
+  });
+
+  productsEl.innerHTML = "";
+
+  resultCountEl.textContent =
+    `${filtrados.length} ${filtrados.length === 1 ? "produto encontrado" : "produtos encontrados"}`;
+
+  totalSidebarEl.textContent = `(${produtos.length})`;
+
+  emptyEl.style.display = filtrados.length ? "none" : "block";
+
+  filtrados.forEach(produto => {
+    const precoVisual = precoComDesconto(produto.precoEntregando);
+
+    const card = document.createElement("article");
+    card.className = "product";
+
+    card.innerHTML = `
+      <div class="image-box">
+	
+        <img
+          src="${produto.img}"
+          alt="${produto.nome}"
+          onerror="this.src='https://via.placeholder.com/500x400?text=Sem+Imagem'"
+	    onclick="alerta()"
+        >
+      </div>
+
+      <div class="info">
+        <div class="product-name">${produto.nome}</div>
+
+        <div class="code">
+          Código: ${produto.codigo}
+        </div>
+
+        <span class="category-label">${produto.categoria}</span>
+
+        <div class="stars">★★★★★</div>
+
+        <div class="price">
+          ${dinheiro(precoVisual)}
+          <small>à vista</small>
+        </div>
+
+        <div class="entrega">
+          Valor entregando: ${dinheiro(produto.precoEntregando)}
+        </div>
+      </div>
+    `;
+
+    productsEl.appendChild(card);
+  });
+}
+
+function adicionarProduto(codigo) {
+  const produto = produtos.find(p => p.codigo === codigo);
+
+  if (!produto) return;
+
+  alert(
+    `Produto selecionado:\\n\\n${produto.nome}\\nCódigo: ${produto.codigo}\\nPreço: ${dinheiro(precoComDesconto(produto.precoEntregando))}`
+  );
+}
+
+searchEl.addEventListener("input", renderProdutos);
+
+mobileCategoryEl.addEventListener("change", () => {
+  categoriaSelecionada = mobileCategoryEl.value;
+
+  document.querySelectorAll('input[name="categoria"]').forEach(input => {
+    input.checked = input.value === categoriaSelecionada;
+  });
+
+  renderProdutos();
+});
+
+document.getElementById("gridButton").addEventListener("click", () => {
+  productsEl.classList.remove("list");
+  document.getElementById("gridButton").classList.add("active");
+  document.getElementById("listButton").classList.remove("active");
+});
+
+document.getElementById("listButton").addEventListener("click", () => {
+  productsEl.classList.add("list");
+  document.getElementById("listButton").classList.add("active");
+  document.getElementById("gridButton").classList.remove("active");
+});
+
+criarCategorias();
+renderProdutos();
+</script>
+
+</body>
+</html>
