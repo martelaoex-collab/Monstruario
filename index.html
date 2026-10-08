@@ -25,7 +25,24 @@
     border-right: 1px solid #ddd;
     padding: 18px 15px;
   }
-
+#btnWhatsapp {
+		color: black;
+		text-decoration: none;
+}
+.btn-zap {
+		background-color: RGB(37, 211, 102);
+		height: 28px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 80%;
+		margin-bottom: 8px;
+		border: none;
+		border-radius: 4px;
+		box-shadow: 1px 1px 5px black;
+		cursor: pointer;
+		font-weight: bold;
+}
   .filter-title {
     display: flex;
     justify-content: space-between;
@@ -150,6 +167,7 @@
 
   .image-box {
     height: 375px;
+	width: 400px;
     position: relative;
     display: flex;
     align-items: center;
@@ -376,7 +394,57 @@
   preçoExibido = preçoEntregando * 0.80
 */
 
-const produtos = [
+const produtos = [  
+{
+    nome: "Gabinete Cozinha Toquio 144,2cm Branco - RORATO",
+    img: "./imgs/gabineteCozinha01.jpeg",
+    codigo: "19780",
+    precoEntregando: 669.96,
+    categoria: "Armario de Cozinha"
+  },
+{
+    nome: "FL Gabinete Cozinha Toquio 144,2cm Preto - RORATO",
+    img: "./imgs/gabineteCozinha02.jpeg",
+    codigo: "19774",
+    precoEntregando: 673.74,
+    categoria: "Armario de Cozinha"
+  },
+{
+    nome: "Gabinete Cozinha Toquio 144,2cm Preto - RORATO",
+    img: "./imgs/gabineteCozinha03.jpeg",
+    codigo: "19779",
+    precoEntregando: 669.98,
+    categoria: "Armario de Cozinha"
+  },
+{
+    nome: "Gabinete Cozinha Toquio 95,2cm Cerejeira - RORATO",
+    img: "./imgs/gabineteCozinha04.jpeg",
+    codigo: "27445",
+    precoEntregando: 573.12,
+    categoria: "Armario de Cozinha"
+  },
+{
+    nome: "Balcão Cozinha Slim 94cm Freijo/Off White - MGM",
+    img: "./imgs/gabineteCozinha05.jpeg",
+    codigo: "25401",
+    precoEntregando: 614.39,
+    categoria: "Armario de Cozinha"
+  },
+{
+    nome: "Balcão Cozinha Slim 94cm Branco/Preto - MGM",
+    img: "./imgs/gabineteCozinha06.jpeg",
+    codigo: "25399",
+    precoEntregando: 639.96,
+    categoria: "Armario de Cozinha"
+  },
+{
+    nome: "Gabinete Cozinha Valenza 144,2cm Text Branca - RORATO",
+    img: "./imgs/gabineteCozinha07.jpeg",
+    codigo: "05772",
+    precoEntregando: 1024.34,
+    categoria: "Armario de Cozinha"
+  },
+
   {
     nome: "FL Kit Sicilia Susp 1 Porta 44.5cm + Pia + Espelho Text Preta - RORATO",
     img: "./imgs/gabineteBanheiro1.jpeg",
@@ -637,6 +705,8 @@ function criarCategorias() {
   });
 }
 
+
+
 function renderProdutos() {
   const busca = searchEl.value.toLowerCase().trim();
 
@@ -660,6 +730,8 @@ function renderProdutos() {
   totalSidebarEl.textContent = `(${produtos.length})`;
 
   emptyEl.style.display = filtrados.length ? "none" : "block";
+
+	
 
   filtrados.forEach(produto => {
     const precoVisual = precoComDesconto(produto.precoEntregando);
@@ -688,6 +760,9 @@ function renderProdutos() {
         <span class="category-label">${produto.categoria}</span>
 
         <div class="stars">★★★★★</div>
+<div class="btn-zap">
+<a href="https://wa.me/5521970595032?text=Olá Gostaria de saber mais sobre o produto: ${produto.nome} cod: ${produto.codigo}." id='btnWhatsapp' title="Share on whatsapp" target="_blank">WhatsApp</a>
+</div>
 
         <div class="price">
           ${dinheiro(precoVisual)}
@@ -703,6 +778,19 @@ function renderProdutos() {
     productsEl.appendChild(card);
   });
 }
+
+const botao = document.getElementById('btnWhatsapp');
+
+const numeroTelefone = "5521970595032";
+const mensagemOriginal = "Olá! Gostaria de saber mais sobre os serviços.";
+
+const mensagemCodificada = encodeURIComponent(mensagemOriginal);
+
+const linkWhatsapp = `https://wa.me{numeroTelefone}?text=${mensagemCodificada}`;
+
+function event() {
+    window.open(linkWhatsapp, '_blank');
+  };
 
 function adicionarProduto(codigo) {
   const produto = produtos.find(p => p.codigo === codigo);
