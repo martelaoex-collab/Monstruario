@@ -171,7 +171,7 @@
   }
 
   .image-box {
-    height: 375px;
+    height: 275px;
     position: relative;
     display: flex;
     align-items: center;
@@ -328,11 +328,11 @@
     }
 
     .products {
-      grid-template-columns: repeat(1, minmax(140px, 1fr));
+      grid-template-columns: repeat(2, minmax(140px, 1fr));
       gap: 12px;
     }
 
-    .image-box { height: 405px; }
+    .image-box { width: 100% }
     .info { padding: 11px; }
     .product-name { font-size: 13px; }
     .price { font-size: 20px; }
@@ -764,7 +764,85 @@ const produtos = [
     codigo: "25201",
     precoEntregando: 665.64,
     categoria: "Gabinete para Banheiro"
-  }
+  },
+
+  {
+    nome: "Pia Marmore Sint Granitada Cuba Inox 1.50x55cm TR - RORATO",
+    img: "./imgs/piaCoz1.jpeg",
+    codigo: "00945",
+    precoEntregando: 549.97,
+    categoria: "Pias"
+  },
+  {
+    nome: "FL Pia Granito 150x55 Veneziam - LEGG",
+    img: "./imgs/piaCoz2.jpeg",
+    codigo: "22739",
+    precoEntregando: 460.62,
+    categoria: "Pias"
+  },
+  {
+    nome: "Pia Granito Tesla Premium Nero 150x55 - LEGG",
+    img: "./imgs/piaCoz3.jpeg",
+    codigo: "26691",
+    precoEntregando: 1347.51,
+    categoria: "Pias"
+  },
+  {
+    nome: "FL Pia Granito 100x55 Venezian - LEGG",
+    img: "./imgs/piaCoz4.jpeg",
+    codigo: "22738",
+    precoEntregando: 366.89,
+    categoria: "Pias"
+  },
+  {
+    nome: "Pia Granito 100x55 Venezian - LEGG",
+    img: "./imgs/piaCoz5.jpeg",
+    codigo: "00070",
+    precoEntregando: 403.13,
+    categoria: "Pias"
+  },
+  {
+    nome: "Pia Granito 100x55 Topazio Solare - LEGG",
+    img: "./imgs/piaCoz6.jpeg",
+    codigo: "00072",
+    precoEntregando: 423.73,
+    categoria: "Pias"
+  },
+  {
+    nome: "FL Pia Granito Tesla Goumert Black c/ DOsador e Cesto 150x55 - LEGG",
+    img: "./imgs/piaCoz7.jpeg",
+    codigo: "26689",
+    precoEntregando: 2088.68,
+    categoria: "Pias"
+  },
+  {
+    nome: "Pia Granito 120x55 Thissus - LEGG",
+    img: "./imgs/piaCoz8.jpeg",
+    codigo: "25899",
+    precoEntregando: 401.24,
+    categoria: "Pias"
+  },
+  {
+    nome: "Pia Marmore Sintetico Standard Granitada 120x55cm Cinza - RORATO",
+    img: "./imgs/piaCoz9.jpeg",
+    codigo: "26753",
+    precoEntregando: 227.49,
+    categoria: "Pias"
+  },
+  {
+    nome: "Pia Granito 120x55cm Corumba Selene - LEGG",
+    img: "./imgs/piaCoz10.jpeg",
+    codigo: "00074",
+    precoEntregando: 500.64,
+    categoria: "Pias"
+  },
+  {
+    nome: "Pia Granito 150x55cm Thissus - LEGG",
+    img: "./imgs/piaCoz11.jpeg",
+    codigo: "25900",
+    precoEntregando: 500.61,
+    categoria: "Pias"
+  },
 ];
 
 let categoriaSelecionada = "todos";
