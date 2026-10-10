@@ -876,105 +876,140 @@ const produtos = [
     nome: "Piso 75027 Onix Black 75x75 Polido Cx 2.23m - Karina",
     img: "./imgs/piso1.jpeg",
     codigo: "27556",
-    precoEntregando: 82.49,
+    precoEntregando: 0,
     categoria: "Pisos"
   },
   {
     nome: "Piso 75007 Onix Blue 75x75 Polido cx 2.23m - Karina",
     img: "./imgs/piso2.jpeg",
     codigo: "25549",
-    precoEntregando: 80.62,
+    precoEntregando: 0,
     categoria: "Pisos"
   },
   {
     nome: "Piso 75032 Black Gold 75x75 Polido cx 2.23m - Karina",
     img: "./imgs/piso3.jpeg",
     codigo: "27883",
-    precoEntregando: 82.49,
+    precoEntregando: 0,
     categoria: "Pisos"
   },
   {
     nome: "Piso 75001 Avorio 75x75 Polido cx 2.23m - Karina",
     img: "./imgs/piso4.jpeg",
     codigo: "27884",
-    precoEntregando: 78.12,
+    precoEntregando: 0,
     categoria: "Pisos"
   },
   {
     nome: "Piso PR7026 70x70 Retificado Cx 3.43m - Rocha Forte",
     img: "./imgs/piso5.jpeg",
     codigo: "27731",
-    precoEntregando: 59.98,
+    precoEntregando: 0,
     categoria: "Pisos"
   },
   {
     nome: "Piso Imperium Dark Polido RT 66x66 Cx 2.18m - FORMIGRES",
     img: "./imgs/piso6.jpeg",
     codigo: "27797",
-    precoEntregando: 64.37,
+    precoEntregando: 0,
     categoria: "Pisos"
   },
   {
     nome: "Piso R7062 70x70 Retificado cx 3.43m - Rocha Forte",
     img: "./imgs/piso7.jpeg",
     codigo: "27728",
-    precoEntregando: 39.37,
+    precoEntregando: 0,
     categoria: "Pisos"
   },
   {
     nome: "Piso R7014 70x70 Retificado cx 3.43mt - Rocha Forte",
     img: "./imgs/piso8.jpeg",
     codigo: "27835",
-    precoEntregando: 39.37,
+    precoEntregando: 0,
     categoria: "Pisos"
   },
   {
     nome: "Piso Metropole 70x70 Retificado cx 3.43m - Rocha Forte",
     img: "./imgs/piso9.jpeg",
     codigo: "27735",
-    precoEntregando: 39.37,
+    precoEntregando: 0,
     categoria: "Pisos"
   },
   {
     nome: "Piso R7008 70x70 Retificado cx 3.43m - Rocha Forte",
     img: "./imgs/piso10.jpeg",
     codigo: "27834",
-    precoEntregando: 39.37,
+    precoEntregando: 0,
     categoria: "Pisos"
   },
   {
     nome: "Piso R7094 70x70 Retificado cx 3.43m - Rocha Forte",
     img: "./imgs/piso11.jpeg",
     codigo: "27839",
-    precoEntregando: 39.37,
+    precoEntregando: 0,
     categoria: "Pisos"
   },
   {
     nome: "Piso R7060 70x70 Retificado cx 3.43m - Rocha Forte",
     img: "./imgs/piso12.jpeg",
     codigo: "27729",
-    precoEntregando: 39.37,
+    precoEntregando: 0,
     categoria: "Pisos"
   },
   {
     nome: "Piso R7041 70x70 Retificado cx 3.43m - Rocha Forte",
     img: "./imgs/piso13.jpeg",
     codigo: "27726",
-    precoEntregando: 39.37,
+    precoEntregando: 0,
     categoria: "Pisos"
   },
   {
     nome: "Piso PR7094 Retificado cx 3.43m - Rocha Forte",
     img: "./imgs/piso14.jpeg",
     codigo: "27838",
-    precoEntregando: 59.98,
+    precoEntregando: 0,
     categoria: "Pisos"
   },
   {
     nome: "Piso R7007 70x70 Retificado cx 3.43m - Rocha Forte",
     img: "./imgs/piso15.jpeg",
     codigo: "27727",
-    precoEntregando: 39.37,
+    precoEntregando: 0,
+    categoria: "Pisos"
+  },
+  {
+    nome: "Piso Primus Polido RT 81x81 cx 1.97m - Formigres",
+    img: "./imgs/piso16.jpeg",
+    codigo: "27799",
+    precoEntregando: 0,
+    categoria: "Pisos"
+  },
+  {
+    nome: "Piso Grafitte Retificado Polido 82x82 cx 2.70m - Rocha Forte",
+    img: "./imgs/piso17.jpeg",
+    codigo: "27733",
+    precoEntregando: 0,
+    categoria: "Pisos"
+  },
+  {
+    nome: "Piso Cristal Onix Polido 82x82 Ret cx 2.70m - Rocha Forte",
+    img: "./imgs/piso18.jpeg",
+    codigo: "27837",
+    precoEntregando: 0,
+    categoria: "Pisos"
+  },
+  {
+    nome: "Piso Damasco Retificado Polido 82x82 cx 2.70m - Rocha Forte",
+    img: "./imgs/piso19.jpeg",
+    codigo: "27730",
+    precoEntregando: 0,
+    categoria: "Pisos"
+  },
+  {
+    nome: "Piso Cristallo Polido 82x82 Ret cx 2.70m - Rocha Forte",
+    img: "./imgs/piso20.jpeg",
+    codigo: "27836",
+    precoEntregando: 0,
     categoria: "Pisos"
   },
 ];
@@ -1069,7 +1104,7 @@ function renderProdutos() {
 	
 
   filtrados.forEach(produto => {
-    const precoVisual = precoComDesconto(produto.precoEntregando);
+    const precoVisual = precoComDesconto(produto.precoEntregando) > 0 ? precoComDesconto(produto.precoEntregando) : "Consultar Preço";
 
     const card = document.createElement("article");
     card.className = "product";
